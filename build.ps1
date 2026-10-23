@@ -35,7 +35,7 @@ if ($Installer) {
             $shortcut = $shell.CreateShortcut($startMenuShortcut)
             $shortcut.TargetPath = $installedExecutable
             $shortcut.WorkingDirectory = $installedDirectory
-            $shortcut.IconLocation = "$installedExecutable,0"
+            $shortcut.IconLocation = "$(Join-Path $installedDirectory 'Assets\AppIcon.ico'),0"
             $shortcut.Description = 'ClipVault — Advanced Clipboard Manager for Windows'
             $shortcut.Save()
         }

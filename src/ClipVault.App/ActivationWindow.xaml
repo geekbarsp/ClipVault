@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window x:Class="ClipVault_App.ActivationWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Activate ClipVault">
+ <Window.SystemBackdrop><MicaBackdrop /></Window.SystemBackdrop>
+ <Grid x:Name="Root" Padding="42" Background="{ThemeResource ClipVaultSurfaceBrush}">
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="430" Spacing="14">
+   <Image Source="Assets/Brand/ClipVaultLogo.png" Height="150" Stretch="Uniform" AutomationProperties.Name="ClipVault logo"/>
+   <TextBlock Text="Activate ClipVault" FontSize="30" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+   <TextBlock Text="Your clipboard history always stays on this PC. The internet connection is used only to validate this license." TextWrapping="Wrap" TextAlignment="Center" Foreground="{ThemeResource ClipVaultMutedBrush}"/>
+   <TextBox x:Name="LicenseKeyBox" Header="License key" PlaceholderText="CLIP-XXXX-XXXX-XXXX-XXXX" CharacterCasing="Upper" MaxLength="24"/>
+   <Button x:Name="ActivateButton" Content="Activate" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Style="{StaticResource AccentButtonStyle}" Click="ActivateButton_Click"/>
+   <TextBlock x:Name="ConnectionStatus" Text="Internet: required for activation" TextAlignment="Center" Foreground="{ThemeResource ClipVaultMutedBrush}"/>
+   <ProgressRing x:Name="Progress" IsActive="False" Visibility="Collapsed" HorizontalAlignment="Center"/>
+   <InfoBar x:Name="StatusBar" IsOpen="False" IsClosable="False" Severity="Error"/>
+   <TextBlock Text="An internet connection is required for first activation. One license can be bound to one Windows PC." TextWrapping="Wrap" TextAlignment="Center" FontSize="12" Foreground="{ThemeResource ClipVaultMutedBrush}"/>
+  </StackPanel>
+ </Grid>
+</Window>

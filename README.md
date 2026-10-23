@@ -11,7 +11,7 @@ ClipVault is a native Windows clipboard manager built with C# 14, .NET 10, WinUI
 - Independently topmost main and compact windows using `SetWindowPos(HWND_TOPMOST/HWND_NOTOPMOST)` with separate persisted settings.
 - Compact search/copy/paste window opened with `Ctrl+Shift+V`.
 - Global shortcuts: `Ctrl+Shift+V` compact mode, `Ctrl+Shift+H` dashboard, `Ctrl+Alt+P` main-window topmost.
-- Local-only data, no telemetry, no remote metadata lookup, and logs that exclude clipboard payloads.
+- Local-only clipboard data, no telemetry, and logs that exclude clipboard payloads. Supabase is used only for license validation and one-device binding.
 - Single-instance guard and rolling diagnostic logs.
 - Original ClipVault icon and generated Windows tile assets.
 
@@ -31,7 +31,9 @@ Or run `./build.ps1`. The verified standalone x64 application is generated at `a
 
 ## Storage and privacy
 
-Data lives in `%LOCALAPPDATA%\ClipVault`: `clipvault.db`, `settings.json`, image payloads, and redacted diagnostic logs. ClipVault does not upload clipboard contents. Private mode stops capture immediately and does not queue clipboard events. Password detection is not reliable; use excluded-app support once implemented or pause capture before copying secrets.
+Clipboard history and settings live in `%LOCALAPPDATA%\ClipVault\clipvault.db`; image payloads and redacted diagnostic logs stay under the same local folder. Existing `settings.json` preferences are migrated into SQLite without deleting the legacy file. ClipVault never uploads clipboard contents. Supabase receives only licensing metadata: a license key, a one-way device fingerprint, app version, and licensing operation. Private mode stops capture immediately and does not queue clipboard events.
+
+License activation requires internet access the first time. A signed token then permits offline use for the license's configured grace period (seven days by default). The local license credential is encrypted for the current Windows user with DPAPI. See [LICENSING.md](docs/LICENSING.md) for backend deployment and administrator setup.
 
 ## Keyboard shortcuts
 

@@ -12,6 +12,7 @@ public partial class App : Application
     private readonly Mutex _singleInstance = new(true, "Local\\ClipVault-2E57EAC0-22A4-47C5-9A5F-48079BD92880");
     public static Window Window { get; private set; } = null!;
     public static IServiceProvider Services { get; private set; } = null!;
+    private static ActivationWindow? _activationWindow;
 
     public App()
     {
@@ -21,7 +22,9 @@ public partial class App : Application
         Log.Logger = new LoggerConfiguration().MinimumLevel.Information().WriteTo.File(Path.Combine(data, "Logs", "clipvault-.log"), rollingInterval: RollingInterval.Day, retainedFileCountLimit: 14).CreateLogger();
         Services = new ServiceCollection()
             .AddSingleton(new ClipboardRepository(Path.Combine(data, "clipvault.db")))
-            .AddSingleton(new SettingsStore(Path.Combine(data, "settings.json")))
+            .AddSingleton(new SettingsStore(Path.Combine(data, "clipvault.db"), Path.Combine(data, "settings.json")))
+            .AddSingleton(new HttpClient { Timeout = TimeSpan.FromSeconds(12) })
+            .AddSingleton<LicenseService>()
             .AddSingleton<ClipboardMonitorService>()
             .AddSingleton<SafePasteService>()
             .AddSingleton<StartupService>()
@@ -36,13 +39,26 @@ public partial class App : Application
         try
         {
             if (!_singleInstance.WaitOne(TimeSpan.Zero, true)) { Exit(); return; }
-            var monitor = Services.GetRequiredService<ClipboardMonitorService>();
-            await monitor.InitializeAsync();
-            Services.GetRequiredService<StartupService>().Apply(monitor.Settings.StartWithWindows);
-            Window = new MainWindow();
-            Window.Activate();
-            Log.Information("ClipVault started");
+            var license = await Services.GetRequiredService<LicenseService>().CheckStartupAsync();
+            if (license.Allowed) await OpenMainWindowAsync();
+            else
+            {
+                _activationWindow = new ActivationWindow(license.Message);
+                Window = _activationWindow;
+                Window.Activate();
+            }
         }
         catch (Exception ex) { Log.Fatal(ex, "ClipVault startup failed"); throw; }
+    }
+
+    public static async Task OpenMainWindowAsync()
+    {
+        var monitor = Services.GetRequiredService<ClipboardMonitorService>();
+        await monitor.InitializeAsync();
+        Services.GetRequiredService<StartupService>().Apply(monitor.Settings.StartWithWindows);
+        Window = new MainWindow();
+        Window.Activate();
+        _activationWindow = null;
+        Log.Information("ClipVault started with a valid license");
     }
 }

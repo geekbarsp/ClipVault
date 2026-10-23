@@ -24,9 +24,10 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-48_altform-lightunplated.png" />
     <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\AppIcon.ico" />
+    <Content Include="Assets\AppIcon.ico" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Brand\ClipVaultIcon.png" />
+    <Content Include="Assets\Brand\ClipVaultLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,7 @@
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="*" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="10.0.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClipVault.Core\ClipVault.Core.csproj" />

@@ -10,7 +10,7 @@
     <!-- Reserved for the native minimize, maximize, and close buttons. -->
     <ColumnDefinition Width="150"/>
    </Grid.ColumnDefinitions>
-   <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0,8,0" Spacing="8" VerticalAlignment="Center"><Border Width="26" Height="26" CornerRadius="7" Background="#2583F7"><FontIcon Glyph="&#xE77F;" FontSize="15" Foreground="White"/></Border><TextBlock Text="ClipVault" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></StackPanel>
+   <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0,8,0" Spacing="8" VerticalAlignment="Center"><Image Width="28" Height="28" Source="Assets/Brand/ClipVaultIcon.png" Stretch="Uniform" AutomationProperties.Name="ClipVault logo"/><TextBlock Text="ClipVault" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></StackPanel>
    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,3,6,3" Spacing="2">
     <Button x:Name="CompactPinButton" Click="Pin_Click" Width="36" ToolTipService.ToolTip="Always on Top"><FontIcon x:Name="CompactPinIcon" Glyph="&#xE840;" FontSize="13"/></Button>
     <Button Click="Expand_Click" Width="36" ToolTipService.ToolTip="Open dashboard"><FontIcon Glyph="&#xE740;" FontSize="13"/></Button>
