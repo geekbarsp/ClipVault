@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page x:Class="ClipVault_App.MainPage"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:conv="using:ClipVault_App.Converters"
+ Loaded="Page_Loaded">
+ <Page.Resources>
+  <conv:ContentTypeGlyphConverter x:Key="TypeGlyph"/>
+  <conv:DateTimeDisplayConverter x:Key="DateDisplay"/>
+  <conv:BooleanGlyphConverter x:Key="BooleanGlyph"/>
+  <conv:BooleanOpacityConverter x:Key="BooleanOpacity"/>
+  <conv:BooleanVisibilityConverter x:Key="BooleanVisibility"/>
+  <conv:MonitoringLabelConverter x:Key="MonitoringLabel"/>
+  <conv:LocalImageConverter x:Key="LocalImage"/>
+  <conv:FileSizeConverter x:Key="FileSize"/>
+  <conv:NullToVisibilityConverter x:Key="NullVisibility"/>
+ </Page.Resources>
+
+ <Grid x:Name="DashboardRoot" Background="{ThemeResource ClipVaultSurfaceBrush}">
+  <Grid.ColumnDefinitions><ColumnDefinition x:Name="NavigationColumn" Width="280"/><ColumnDefinition x:Name="HistoryColumn" Width="*"/><ColumnDefinition x:Name="PreviewColumn" Width="440"/></Grid.ColumnDefinitions>
+  <VisualStateManager.VisualStateGroups>
+   <VisualStateGroup x:Name="ResponsiveLayoutStates">
+    <VisualState x:Name="WideLayout">
+     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="1380"/></VisualState.StateTriggers>
+    </VisualState>
+    <VisualState x:Name="MediumLayout">
+     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="900"/></VisualState.StateTriggers>
+     <VisualState.Setters>
+      <Setter Target="NavigationColumn.Width" Value="220"/>
+      <Setter Target="PreviewColumn.Width" Value="300"/>
+      <Setter Target="HistoryPane.Padding" Value="20,20,18,14"/>
+      <Setter Target="PreviewPane.Padding" Value="18,22,18,18"/>
+      <Setter Target="HistoryHeaderActions.(Grid.Row)" Value="1"/>
+      <Setter Target="HistoryHeaderActions.HorizontalAlignment" Value="Left"/>
+      <Setter Target="HistoryHeaderActions.Margin" Value="0,12,0,0"/>
+      <Setter Target="SortBox.(Grid.Row)" Value="1"/>
+      <Setter Target="SortBox.HorizontalAlignment" Value="Left"/>
+      <Setter Target="SortBox.Margin" Value="0,8,0,0"/>
+      <Setter Target="SelectionScroller.Margin" Value="0"/>
+     </VisualState.Setters>
+    </VisualState>
+    <VisualState x:Name="NarrowLayout">
+     <VisualState.StateTriggers><AdaptiveTrigger MinWindowWidth="0"/></VisualState.StateTriggers>
+     <VisualState.Setters>
+      <Setter Target="NavigationColumn.Width" Value="0"/>
+      <Setter Target="PreviewColumn.Width" Value="0"/>
+      <Setter Target="NavigationPane.Visibility" Value="Collapsed"/>
+      <Setter Target="PreviewPane.Visibility" Value="Collapsed"/>
+      <Setter Target="HistoryPane.Padding" Value="16,18,16,12"/>
+      <Setter Target="HistoryHeaderActions.(Grid.Row)" Value="1"/>
+      <Setter Target="HistoryHeaderActions.HorizontalAlignment" Value="Left"/>
+      <Setter Target="HistoryHeaderActions.Margin" Value="0,12,0,0"/>
+      <Setter Target="SortBox.(Grid.Row)" Value="1"/>
+      <Setter Target="SortBox.HorizontalAlignment" Value="Left"/>
+      <Setter Target="SortBox.Margin" Value="0,8,0,0"/>
+      <Setter Target="SelectionScroller.Margin" Value="0"/>
+     </VisualState.Setters>
+    </VisualState>
+   </VisualStateGroup>
+  </VisualStateManager.VisualStateGroups>
+
+  <!-- Library navigation -->
+  <Border x:Name="NavigationPane" Background="{ThemeResource ClipVaultSidebarBrush}" BorderBrush="{ThemeResource ClipVaultBorderBrush}" BorderThickness="0,0,1,0" Padding="22,24,18,18">
+   <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <TextBlock Text="LIBRARY" FontSize="12" Foreground="{ThemeResource ClipVaultMutedBrush}" Margin="10,0,0,8"/>
+    <ListView x:Name="SectionList" Grid.Row="1" SelectedIndex="0" SelectionChanged="Section_Changed" ItemContainerStyle="{StaticResource SidebarItemStyle}">
+     <ListViewItem Tag="All"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE80F;" FontSize="20"/><TextBlock Text="Dashboard" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="All"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE823;" FontSize="20"/><TextBlock Text="Recent" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Pinned"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE840;" FontSize="20"/><TextBlock Text="Pinned" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Favorites"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE734;" FontSize="20" Foreground="#F4A300"/><TextBlock Text="Favorites" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Text"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE8A5;" FontSize="20"/><TextBlock Text="Text" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Images"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xEB9F;" FontSize="20"/><TextBlock Text="Images" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Links"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE71B;" FontSize="20"/><TextBlock Text="Links" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Files"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE8B7;" FontSize="20"/><TextBlock Text="Files" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+     <ListViewItem Tag="Trash"><StackPanel Orientation="Horizontal" Spacing="14"><FontIcon Glyph="&#xE74D;" FontSize="20"/><TextBlock Text="Trash" FontSize="16" VerticalAlignment="Center"/></StackPanel></ListViewItem>
+    </ListView>
+    <StackPanel Grid.Row="2" Spacing="10">
+     <Rectangle Height="1" Fill="{ThemeResource ClipVaultBorderBrush}" Margin="8,0,8,8"/>
+     <TextBlock Text="SYSTEM" FontSize="12" Foreground="{ThemeResource ClipVaultMutedBrush}" Margin="10,0,0,0"/>
+     <Button Command="{x:Bind ViewModel.ToggleMonitoringCommand}" HorizontalAlignment="Stretch" Height="48" CornerRadius="10" Background="{ThemeResource ClipVaultCardBrush}" BorderBrush="{ThemeResource ClipVaultBorderBrush}">
+      <StackPanel Orientation="Horizontal" Spacing="13"><FontIcon Glyph="&#xE768;"/><TextBlock Text="{x:Bind ViewModel.MonitoringEnabled, Mode=OneWay, Converter={StaticResource MonitoringLabel}}" FontSize="15"/></StackPanel>
+     </Button>
+     <Border Background="{ThemeResource ClipVaultCardBrush}" BorderBrush="{ThemeResource ClipVaultBorderBrush}" BorderThickness="1" CornerRadius="10" Height="48" Padding="12,0">
+      <Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="48"/></Grid.ColumnDefinitions><StackPanel Orientation="Horizontal" Spacing="13"><FontIcon Glyph="&#xE72E;"/><TextBlock Text="Private mode" FontSize="15" VerticalAlignment="Center"/></StackPanel><ToggleSwitch x:Name="PrivateToggle" Grid.Column="1" MinWidth="0" Width="44" HorizontalAlignment="Right" IsOn="{x:Bind ViewModel.PrivateMode, Mode=OneWay}" Toggled="PrivateMode_Toggled" OffContent="" OnContent="" AutomationProperties.Name="Private mode"/></Grid>
+     </Border>
+     <Button Click="CompactMode_Click" HorizontalAlignment="Stretch" Height="44" Background="Transparent" BorderThickness="0"><StackPanel Orientation="Horizontal" Spacing="13"><FontIcon Glyph="&#xE73F;"/><TextBlock Text="Compact mode" FontSize="15"/></StackPanel></Button>
+     <Button Click="Settings_Click" HorizontalAlignment="Stretch" Height="44" Background="Transparent" BorderThickness="0"><StackPanel Orientation="Horizontal" Spacing="13"><FontIcon Glyph="&#xE713;"/><TextBlock Text="Settings" FontSize="15"/></StackPanel></Button>
+     <Button Click="About_Click" HorizontalAlignment="Stretch" Height="44" Background="Transparent" BorderThickness="0"><StackPanel Orientation="Horizontal" Spacing="13"><FontIcon Glyph="&#xE946;"/><TextBlock Text="About ClipVault" FontSize="15"/></StackPanel></Button>
+    </StackPanel>
+   </Grid>
+  </Border>
+
+  <!-- Search and history -->
+  <Grid x:Name="HistoryPane" Grid.Column="1" Padding="28,24,24,16">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+   <Grid x:Name="HistoryHeader">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <StackPanel><TextBlock Text="Clipboard History" FontSize="34" FontWeight="SemiBold" Foreground="{ThemeResource ClipVaultTextBrush}"/><TextBlock Text="Everything you copy, always at your fingertips." FontSize="15" Foreground="{ThemeResource ClipVaultMutedBrush}" Margin="0,2,0,0"/></StackPanel>
+    <StackPanel x:Name="HistoryHeaderActions" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Spacing="8">
+     <Button Command="{x:Bind ViewModel.ToggleMonitoringCommand}" CornerRadius="18" Padding="14,8"><StackPanel Orientation="Horizontal" Spacing="8"><Ellipse Width="9" Height="9" Fill="#38E58C"/><TextBlock Text="{x:Bind ViewModel.MonitoringEnabled, Mode=OneWay, Converter={StaticResource MonitoringLabel}}"/></StackPanel></Button>
+     <Button Command="{x:Bind ViewModel.TogglePrivateModeCommand}" CornerRadius="18" Padding="14,8"><StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE72E;" FontSize="14"/><TextBlock Text="Private mode"/></StackPanel></Button>
+    </StackPanel>
+   </Grid>
+   <AutoSuggestBox x:Name="SearchBox" Grid.Row="1" Visibility="Collapsed" Text="{x:Bind ViewModel.SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+   <Grid Grid.Row="2" Margin="0,18,0,14">
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <ScrollViewer x:Name="SelectionScroller" HorizontalScrollMode="Auto" HorizontalScrollBarVisibility="Hidden" VerticalScrollMode="Disabled" VerticalScrollBarVisibility="Disabled" Margin="0,0,184,0">
+     <StackPanel Orientation="Horizontal" Spacing="8">
+      <Button x:Name="SelectModeButton" Click="SelectMode_Click" CornerRadius="18" Padding="14,8"><StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE762;" FontSize="14"/><TextBlock Text="Select"/></StackPanel></Button>
+      <StackPanel x:Name="BatchActions" Orientation="Horizontal" Spacing="8" Visibility="Collapsed">
+       <Button Click="SelectAll_Click" CornerRadius="18" Padding="14,8"><StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE8B3;" FontSize="14"/><TextBlock Text="Select all"/></StackPanel></Button>
+       <Button Click="DeleteSelected_Click" CornerRadius="18" Padding="14,8" Foreground="#F24D4D"><StackPanel Orientation="Horizontal" Spacing="8"><FontIcon Glyph="&#xE74D;" FontSize="14"/><TextBlock Text="Delete"/></StackPanel></Button>
+       <TextBlock x:Name="SelectedCountText" Text="0 selected" VerticalAlignment="Center" Foreground="{ThemeResource ClipVaultMutedBrush}" Margin="4,0"/>
+       <Button Click="CancelSelection_Click" CornerRadius="18" Padding="14,8" Content="Cancel"/>
+      </StackPanel>
+     </StackPanel>
+    </ScrollViewer>
+    <ComboBox x:Name="SortBox" HorizontalAlignment="Right" Width="168" SelectedIndex="0" SelectionChanged="Sort_Changed"><ComboBoxItem Content="Newest first" Tag="Newest"/><ComboBoxItem Content="Oldest first" Tag="Oldest"/><ComboBoxItem Content="Alphabetical" Tag="Alphabetical"/><ComboBoxItem Content="Most used" Tag="MostUsed"/></ComboBox>
+   </Grid>
+   <ListView x:Name="HistoryList" Grid.Row="3" ItemsSource="{x:Bind ViewModel.Items}" SelectedItem="{x:Bind ViewModel.SelectedItem, Mode=TwoWay}" SelectionMode="Single" SelectionChanged="History_SelectionChanged">
+    <ListView.ItemContainerStyle><Style TargetType="ListViewItem"><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="0"/><Setter Property="Margin" Value="0,0,0,10"/><Setter Property="CornerRadius" Value="12"/></Style></ListView.ItemContainerStyle>
+    <ListView.ItemTemplate>
+     <DataTemplate>
+      <Border Background="{ThemeResource ClipVaultCardBrush}" BorderBrush="{ThemeResource ClipVaultBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="16,12">
+       <Grid ColumnSpacing="14">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="72"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+        <Border Width="62" Height="58" CornerRadius="9" Background="{ThemeResource ClipVaultSubtleBrush}" VerticalAlignment="Center">
+         <Grid><FontIcon Glyph="{Binding ContentType, Converter={StaticResource TypeGlyph}}" FontSize="26" Foreground="#245484"/><Image Source="{Binding BinaryPath, Converter={StaticResource LocalImage}, ConverterParameter=92}" Stretch="UniformToFill"/></Grid>
+        </Border>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+         <TextBlock Text="{Binding DisplayTitle}" FontSize="15" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+         <TextBlock Text="{Binding TextContent}" FontFamily="Cascadia Mono" FontSize="13" Foreground="{ThemeResource ClipVaultMutedBrush}" TextTrimming="CharacterEllipsis" MaxLines="1"/>
+         <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="{Binding ContentType}" FontSize="12" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Text="{Binding CreatedAt, Converter={StaticResource DateDisplay}}" FontSize="12" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Text="{Binding DuplicateSummary}" FontSize="12" Foreground="#38A8FF"/></StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Spacing="0">
+         <Button Style="{StaticResource IconButtonStyle}" Click="FavoriteItem_Click" ToolTipService.ToolTip="Favorite"><FontIcon Glyph="{Binding IsFavorite, Converter={StaticResource BooleanGlyph}}" Opacity="{Binding IsFavorite, Converter={StaticResource BooleanOpacity}}" Foreground="#F4A300"/></Button>
+         <Button Style="{StaticResource IconButtonStyle}" Click="PinItem_Click" ToolTipService.ToolTip="Pin"><FontIcon Glyph="&#xE840;" Opacity="{Binding IsPinned, Converter={StaticResource BooleanOpacity}}" Foreground="#087AF1"/></Button>
+         <Button Style="{StaticResource IconButtonStyle}" ToolTipService.ToolTip="More"><FontIcon Glyph="&#xE712;"/><Button.Flyout><MenuFlyout><MenuFlyoutItem Text="Copy" Tag="{Binding}" Click="CopyItem_Click"/><MenuFlyoutItem Text="Edit text" Tag="{Binding}" Click="EditText_Click"/><MenuFlyoutItem Text="Extract text (OCR)" Tag="{Binding}" Click="ExtractOcr_Click"/><MenuFlyoutItem Text="Edit pin title" Tag="{Binding}" Click="EditPinTitle_Click"/><MenuFlyoutItem Text="Collection and tags" Tag="{Binding}" Click="OrganizeItem_Click"/><MenuFlyoutSeparator/><MenuFlyoutItem Text="Move to Trash" Tag="{Binding}" Click="DeleteItem_Click"/></MenuFlyout></Button.Flyout></Button>
+        </StackPanel>
+       </Grid>
+      </Border>
+     </DataTemplate>
+    </ListView.ItemTemplate>
+   </ListView>
+   <TextBlock Grid.Row="4" Text="{x:Bind ViewModel.StatusText, Mode=OneWay}" Foreground="{ThemeResource ClipVaultMutedBrush}" Margin="2,8,0,0"/>
+  </Grid>
+
+  <!-- Selected item preview -->
+  <Border x:Name="PreviewPane" Grid.Column="2" Background="{ThemeResource ClipVaultPanelBrush}" BorderBrush="{ThemeResource ClipVaultBorderBrush}" BorderThickness="1,0,0,0" Padding="24,26,24,22">
+   <Grid>
+    <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+    <Grid><TextBlock Text="Preview" FontSize="25" FontWeight="SemiBold"/><Border HorizontalAlignment="Right" Background="#E8F3FF" CornerRadius="16" Padding="12,6"><StackPanel Orientation="Horizontal" Spacing="7"><FontIcon Glyph="{x:Bind ViewModel.SelectedItem.ContentType, Mode=OneWay, Converter={StaticResource TypeGlyph}}" FontSize="14" Foreground="#0868D7"/><TextBlock Text="{x:Bind ViewModel.SelectedItem.ContentType, Mode=OneWay}" Foreground="#0868D7"/></StackPanel></Border></Grid>
+    <Border Grid.Row="1" Height="300" Margin="0,20,0,14" Background="{ThemeResource ClipVaultSubtleBrush}" CornerRadius="12" BorderBrush="{ThemeResource ClipVaultBorderBrush}" BorderThickness="1">
+     <Grid><FontIcon Glyph="{x:Bind ViewModel.SelectedItem.ContentType, Mode=OneWay, Converter={StaticResource TypeGlyph}}" FontSize="54" Opacity="0.22"/><Image x:Name="PreviewImage" Stretch="UniformToFill"/><ScrollViewer Padding="20"><TextBlock Text="{x:Bind ViewModel.SelectedItem.TextContent, Mode=OneWay}" TextWrapping="Wrap" IsTextSelectionEnabled="True" FontFamily="Cascadia Mono"/></ScrollViewer></Grid>
+    </Border>
+    <ScrollViewer Grid.Row="2">
+     <StackPanel Spacing="12">
+      <TextBlock Text="{x:Bind ViewModel.SelectedItem.DisplayTitle, Mode=OneWay, FallbackValue='Select an item to preview'}" FontSize="17" FontWeight="SemiBold" TextWrapping="Wrap"/>
+      <StackPanel Orientation="Horizontal" Spacing="10"><TextBlock Text="{x:Bind ViewModel.SelectedItem.BinaryPath, Mode=OneWay, Converter={StaticResource FileSize}}" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Text="•" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Text="{x:Bind ViewModel.SelectedItem.ContentType, Mode=OneWay}" Foreground="{ThemeResource ClipVaultMutedBrush}"/></StackPanel>
+      <Rectangle Height="1" Fill="{ThemeResource ClipVaultBorderBrush}" Margin="0,6"/>
+      <TextBlock Text="Details" FontSize="16" FontWeight="SemiBold"/>
+      <Grid ColumnSpacing="12" RowSpacing="12"><Grid.ColumnDefinitions><ColumnDefinition Width="130"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition/><RowDefinition/><RowDefinition/><RowDefinition/></Grid.RowDefinitions>
+       <TextBlock Text="Copied" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Grid.Column="1" Text="{x:Bind ViewModel.SelectedItem.CreatedAt, Mode=OneWay, Converter={StaticResource DateDisplay}}"/>
+       <TextBlock Grid.Row="1" Text="Type" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{x:Bind ViewModel.SelectedItem.ContentType, Mode=OneWay}"/>
+       <TextBlock Grid.Row="2" Text="File size" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{x:Bind ViewModel.SelectedItem.BinaryPath, Mode=OneWay, Converter={StaticResource FileSize}}"/>
+       <TextBlock Grid.Row="3" Text="Hash (SHA256)" Foreground="{ThemeResource ClipVaultMutedBrush}"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{x:Bind ViewModel.SelectedItem.ContentHash, Mode=OneWay}" TextTrimming="CharacterEllipsis"/>
+      </Grid>
+      <TextBlock Text="{x:Bind ViewModel.SelectedItem.CollectionName, Mode=OneWay}" FontWeight="SemiBold" Foreground="#38A8FF"/>
+      <TextBlock Text="{x:Bind ViewModel.SelectedItem.TagsSummary, Mode=OneWay}" Foreground="{ThemeResource ClipVaultMutedBrush}" TextWrapping="Wrap"/>
+      <TextBlock Text="{x:Bind ViewModel.SelectedItem.OcrText, Mode=OneWay}" Foreground="{ThemeResource ClipVaultMutedBrush}" TextWrapping="Wrap" MaxLines="6"/>
+     </StackPanel>
+    </ScrollViewer>
+    <StackPanel Grid.Row="3" Spacing="10" Margin="0,18,0,0">
+     <Grid ColumnSpacing="10"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Button Command="{x:Bind ViewModel.CopyCommand}" Height="50" CornerRadius="9" Background="#1681F8" Foreground="White" HorizontalAlignment="Stretch"><StackPanel Orientation="Horizontal" Spacing="9"><FontIcon Glyph="&#xE8C8;"/><TextBlock Text="Copy"/></StackPanel></Button><Button Grid.Column="1" Command="{x:Bind ViewModel.PasteCommand}" Height="50" CornerRadius="9" HorizontalAlignment="Stretch"><StackPanel Orientation="Horizontal" Spacing="9"><FontIcon Glyph="&#xE77F;"/><TextBlock Text="Paste"/></StackPanel></Button></Grid>
+     <Grid ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Button Click="PinSelected_Click" Height="46" HorizontalAlignment="Stretch"><StackPanel Orientation="Horizontal" Spacing="7"><FontIcon Glyph="&#xE840;"/><TextBlock Text="Pin"/></StackPanel></Button><Button Grid.Column="1" Command="{x:Bind ViewModel.ToggleFavoriteCommand}" Height="46" HorizontalAlignment="Stretch"><StackPanel Orientation="Horizontal" Spacing="7"><FontIcon Glyph="&#xE734;" Foreground="#F4A300"/><TextBlock Text="Favorite"/></StackPanel></Button><Button Grid.Column="2" Command="{x:Bind ViewModel.DeleteCommand}" Height="46" HorizontalAlignment="Stretch" Foreground="{StaticResource ClipVaultDangerBrush}"><StackPanel Orientation="Horizontal" Spacing="7"><FontIcon Glyph="&#xE74D;"/><TextBlock Text="Delete"/></StackPanel></Button></Grid>
+    </StackPanel>
+   </Grid>
+  </Border>
+ </Grid>
+</Page>

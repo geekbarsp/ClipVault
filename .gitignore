@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+AppPackages/
+artifacts/
+TestResults/
+*.log

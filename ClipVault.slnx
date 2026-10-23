@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ClipVault.App/ClipVault.App.csproj" />
+    <Project Path="src/ClipVault.Core/ClipVault.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ClipVault.Tests/ClipVault.Tests.csproj" />
+  </Folder>
+</Solution>

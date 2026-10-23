@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="ClipVault_App.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ClipVault_App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ClipVaultSidebarBrush" Color="#F4F9FE" />
+                    <SolidColorBrush x:Key="ClipVaultSurfaceBrush" Color="#FCFDFE" />
+                    <SolidColorBrush x:Key="ClipVaultPanelBrush" Color="#F9FCFF" />
+                    <SolidColorBrush x:Key="ClipVaultCardBrush" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="ClipVaultSubtleBrush" Color="#F0F5FA" />
+                    <SolidColorBrush x:Key="ClipVaultBorderBrush" Color="#DCE6F0" />
+                    <SolidColorBrush x:Key="ClipVaultMutedBrush" Color="#66758C" />
+                    <SolidColorBrush x:Key="ClipVaultTextBrush" Color="#111827" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ClipVaultSidebarBrush" Color="#101A2C" />
+                    <SolidColorBrush x:Key="ClipVaultSurfaceBrush" Color="#07111F" />
+                    <SolidColorBrush x:Key="ClipVaultPanelBrush" Color="#0B1524" />
+                    <SolidColorBrush x:Key="ClipVaultCardBrush" Color="#152234" />
+                    <SolidColorBrush x:Key="ClipVaultSubtleBrush" Color="#1D2A3D" />
+                    <SolidColorBrush x:Key="ClipVaultBorderBrush" Color="#253650" />
+                    <SolidColorBrush x:Key="ClipVaultMutedBrush" Color="#A0AFC6" />
+                    <SolidColorBrush x:Key="ClipVaultTextBrush" Color="#F5F8FD" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+            <SolidColorBrush x:Key="ClipVaultAccentBrush" Color="#1677F2" />
+            <SolidColorBrush x:Key="ClipVaultAccentSoftBrush" Color="#DCEEFF" />
+            <SolidColorBrush x:Key="ClipVaultDangerBrush" Color="#EA3038" />
+            <Style x:Key="SidebarItemStyle" TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="MinHeight" Value="50" />
+                <Setter Property="Padding" Value="12,0" />
+                <Setter Property="Margin" Value="0,2" />
+                <Setter Property="CornerRadius" Value="10" />
+            </Style>
+            <Style x:Key="ChipButtonStyle" TargetType="Button">
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="CornerRadius" Value="18" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="{ThemeResource ClipVaultBorderBrush}" />
+                <Setter Property="Background" Value="{ThemeResource ClipVaultCardBrush}" />
+            </Style>
+            <Style x:Key="IconButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="38" />
+                <Setter Property="Height" Value="38" />
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

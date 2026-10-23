@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window x:Class="ClipVault_App.CompactWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="ClipVault Compact">
+ <Window.SystemBackdrop><DesktopAcrylicBackdrop /></Window.SystemBackdrop>
+ <Grid x:Name="CompactRoot">
+  <Grid.RowDefinitions><RowDefinition Height="42"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+  <Grid x:Name="CompactTitleBar" Background="Transparent">
+   <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="*"/>
+    <ColumnDefinition Width="Auto"/>
+    <!-- Reserved for the native minimize, maximize, and close buttons. -->
+    <ColumnDefinition Width="150"/>
+   </Grid.ColumnDefinitions>
+   <StackPanel Grid.Column="0" Orientation="Horizontal" Margin="12,0,8,0" Spacing="8" VerticalAlignment="Center"><Border Width="26" Height="26" CornerRadius="7" Background="#2583F7"><FontIcon Glyph="&#xE77F;" FontSize="15" Foreground="White"/></Border><TextBlock Text="ClipVault" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/></StackPanel>
+   <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,3,6,3" Spacing="2">
+    <Button x:Name="CompactPinButton" Click="Pin_Click" Width="36" ToolTipService.ToolTip="Always on Top"><FontIcon x:Name="CompactPinIcon" Glyph="&#xE840;" FontSize="13"/></Button>
+    <Button Click="Expand_Click" Width="36" ToolTipService.ToolTip="Open dashboard"><FontIcon Glyph="&#xE740;" FontSize="13"/></Button>
+   </StackPanel>
+  </Grid>
+  <AutoSuggestBox x:Name="SearchBox" Grid.Row="1" Margin="12,8" PlaceholderText="Search clipboard — Enter to paste" TextChanged="Search_TextChanged" KeyDown="SearchBox_KeyDown" QueryIcon="Find"/>
+  <Grid Grid.Row="2" Margin="12,0,12,6" ColumnSpacing="8"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><ToggleButton x:Name="AllItemsButton" Content="All clipboard" IsChecked="True" Click="AllItems_Click" HorizontalAlignment="Stretch"/><ToggleButton x:Name="PinnedItemsButton" Grid.Column="1" Content="Pinned" Click="PinnedItems_Click" HorizontalAlignment="Stretch"/></Grid>
+  <ListView x:Name="ItemsList" Grid.Row="3" Margin="8" SelectionChanged="Selection_Changed" DoubleTapped="ItemsList_DoubleTapped" KeyDown="ItemsList_KeyDown">
+   <ListView.ItemTemplate><DataTemplate><Grid Padding="8"><Grid.RowDefinitions><RowDefinition/><RowDefinition/></Grid.RowDefinitions><TextBlock Text="{Binding DisplayTitle}" TextTrimming="CharacterEllipsis" MaxLines="2"/><TextBlock Grid.Row="1" Text="{Binding ContentType}" Opacity="0.58" FontSize="11" Margin="0,4,0,0"/></Grid></DataTemplate></ListView.ItemTemplate>
+  </ListView>
+  <StackPanel Grid.Row="4" Padding="12" Spacing="8">
+   <Border x:Name="CopyStatus" Visibility="Collapsed" Background="#173D2B" BorderBrush="#38E58C" BorderThickness="1" CornerRadius="8" Padding="10,7">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="8"><FontIcon Glyph="&#xE73E;" Foreground="#38E58C" FontSize="13"/><TextBlock x:Name="CopyStatusText" Text="Copied to clipboard" Foreground="#8EF0BA" FontWeight="SemiBold" MaxWidth="320" TextTrimming="CharacterEllipsis"/></StackPanel>
+   </Border>
+   <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions><Button Content="Copy" Click="Copy_Click" HorizontalAlignment="Stretch" Margin="0,0,4,0"/><Button Grid.Column="1" Content="Paste" Click="Paste_Click" HorizontalAlignment="Stretch" Margin="4,0,0,0"/></Grid>
+  </StackPanel>
+ </Grid>
+</Window>
